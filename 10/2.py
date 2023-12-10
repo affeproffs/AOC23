@@ -1,32 +1,6 @@
 from sys import stdin
 from typing import *
 
-def getDirection(curr, next):
-    fromY, fromX = curr
-    toY, toX = next
-
-    if toX > fromX:
-        return "right"
-    elif toX < fromX:
-        return "left"
-    elif toY > fromY:
-        return "down"
-    else:
-        return "up"
-
-
-def getInnerCords(curr, innerDir):
-    y, x = curr
-    if (innerDir == "up"):
-        return (y-1, x)
-    if (innerDir == "down"):
-        return (y+1, x)
-    if (innerDir == "left"):
-        return (y, x-1)
-    if (innerDir == "right"):
-        return (y, x+1)
-
-
 def getNeighbourPipes(y, x):
     currO = lines[y][x]
 

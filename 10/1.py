@@ -50,8 +50,7 @@ isDone = False
 steps = 0
 curr = (sY, sX)
 while not isDone:
-    neighbourPipes = getNeighbourPipes(*curr)
-    print("visiting:", curr, lines[curr[0]][curr[1]])
+    neighbourPipes = getNeighbourPipes(*curr)    
     steps += 1
     visited.add(curr)
     for pipe in neighbourPipes:

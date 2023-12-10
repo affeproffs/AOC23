@@ -22,7 +22,6 @@ pipeMap = {
     "down": ["|", "7", "F", "S"],
     "up": ["|", "L", "J", "S"],
 }
-pipes = ["|", "-", "L", "J", "7", "F"]
 
 
 def getNeighbourPipes(y, x):

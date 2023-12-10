@@ -2,19 +2,19 @@ from sys import stdin
 from typing import *
 
 def getNeighbourPipes(y, x):
-    currO = lines[y][x]
+    o = lines[y][x]
 
     upO = (y-1, x, lines[y-1][x])
-    upValid = upO[-1] in pipeMap["down"] and currO in pipeMap["up"]
+    upValid = upO[-1] in pipeMap["down"] and o in pipeMap["up"]
 
     leftO = (y, x-1, lines[y][x-1])
-    leftValid = leftO[-1] in pipeMap["right"] and currO in pipeMap["left"]
+    leftValid = leftO[-1] in pipeMap["right"] and o in pipeMap["left"]
 
     rightO = (y, x+1, lines[y][x+1])
-    rightValid = rightO[-1] in pipeMap["left"] and currO in pipeMap["right"]
+    rightValid = rightO[-1] in pipeMap["left"] and o in pipeMap["right"]
 
     downO = (y+1, x, lines[y+1][x])
-    downValid = downO[-1] in pipeMap["up"] and currO in pipeMap["down"]
+    downValid = downO[-1] in pipeMap["up"] and o in pipeMap["down"]
 
     objects = [(upO, upValid), (leftO, leftValid),
                (rightO, rightValid), (downO, downValid)]

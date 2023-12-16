@@ -2,11 +2,7 @@ from sys import stdin
 from typing import *
 
 def transpose(m):
-    newM = []
-    for line in m:
-        newM.append([])
-        for c in line:
-            newM[-1].append(c)
+    newM = [[c for c in line] for line in m]
     return ["".join(l) for l in list(zip(*newM))]
 
 def hasReflection(pattern):
@@ -21,10 +17,8 @@ def hasReflection(pattern):
             result = 0
             l = r
         r += 1
-    if (result != 0):
-        if l < 0:
-            return result
-        return r - result    
+    if (result != 0 and r == len(pattern)):
+        return r - result
     return result
 
 patterns = [[]]
@@ -34,12 +28,12 @@ for i, line in enumerate(stdin):
     else:
         patterns.append([])
 
-hori, vert = 0, 0
+horizontal, vertical = 0, 0
 for pattern in patterns:
-    horizontal = hasReflection(pattern)
+    hori = hasReflection(pattern)
     transposed = transpose(pattern)
-    vertical = hasReflection(transposed)
-    if horizontal: hori += horizontal
-    if vertical: vert += vertical
-total = vert + (hori * 100)
+    vert = hasReflection(transposed)
+    if hori: horizontal += hori
+    if vert: vertical += vert
+total = vertical + (horizontal * 100)
 print(total)

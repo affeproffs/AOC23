@@ -2,11 +2,7 @@ from sys import stdin
 from typing import *
 
 def transpose(m):
-    newM = []
-    for line in m:
-        newM.append([])
-        for c in line:
-            newM[-1].append(c)
+    newM = [[c for c in line] for line in m]
     return ["".join(l) for l in list(zip(*newM))]
 
 def diff(s1, s2):
@@ -41,36 +37,35 @@ for i, line in enumerate(stdin):
     else:
         patterns.append([])
 
-
-hori, vert = 0, 0
+horizontal, vertical = 0, 0
 for pattern in patterns:
-    horizontal, horiSmudge = hasReflection(pattern)
-    if horizontal and horiSmudge: 
-        hori += horizontal
+    # Top to bottom
+    hori, smudge = hasReflection(pattern)
+    if hori and smudge: 
+        horizontal += hori
         continue
 
-    # try starting from the back
-    horizontal, horiSmudge = hasReflection(list(reversed(pattern)))    
-    if horizontal and horiSmudge:         
-        hori += len(pattern) - horizontal
+    # Bottom to top
+    hori, smudge = hasReflection(list(reversed(pattern)))
+    if hori and smudge:         
+        horizontal += len(pattern) - hori
         continue
 
     transposed = transpose(pattern) # Switch rows and cols
     
-    vertical, vertSmudge = hasReflection(transposed)
-    if vertical and vertSmudge: 
-        vert += vertical
+    # Left to right
+    vert, smudge = hasReflection(transposed)
+    if vert and smudge: 
+        vertical += vert
         continue
     
-    # try starting from the back
-    vertical, vertSmudge = hasReflection(list(reversed(transposed)))
-    if vertical and vertSmudge: 
-        vert += len(transposed) - vertical
+    # Right to left
+    vert, smudge = hasReflection(list(reversed(transposed)))
+    if vert and smudge: 
+        vertical += len(transposed) - vert
         continue
 
     assert False, f"Should never happen. Found no solution using smudge, pattern: {pattern}"
 
-total = vert + (hori * 100) 
+total = vertical + (horizontal * 100) 
 print(total)
-
-

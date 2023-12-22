@@ -2,16 +2,6 @@ from sys import stdin
 from typing import *
 
 
-ans1, ans2 = 0, 0
-
-toDirection = {
-    0: "R",
-    1: "D",
-    2: "L",
-    3: "U"
-}
-
-
 def shoelace(borders: List[Tuple[int, int]]):
     """ Returns the area of the loop """
     loop = borders.copy() + [borders[0]]
@@ -22,36 +12,42 @@ def shoelace(borders: List[Tuple[int, int]]):
     return abs(lSum - rSum) / 2
 
 
-plan = []
+plan: List[Tuple[str, str, str]] = []
 for i, line in enumerate(stdin):
     direction, length, color = line.split()
     plan.append((direction, length, color))
 
+toDirection = "RDLU"
+ans1, ans2 = 0, 0
+for part2 in [False, True]:
+    graph = [(0, 0)]
+    edges = 0
+    for (direction, length, color) in plan:
+        ny, nx = graph[-1]
+        if part2:
+            length = int(color[color.find("#") + 1:-2], 16)
+            direction = toDirection[int(color[-2])]
+        if (direction == "R"):
+            nx += int(length)
+        elif (direction == "L"):
+            nx -= int(length)
+        elif (direction == "U"):
+            ny -= int(length)
+        elif (direction == "D"):
+            ny += int(length)
+        else:
+            assert False, "Unknown direction"
+        edges += int(length)
+        graph.append((ny, nx))
+    A = shoelace(graph)
+    B = len(graph)
 
-graph = [(0, 0)]
-edges = 0
-for (direction, length, _) in plan:
-    ny, nx = graph[-1]
-    if (direction == "R"):
-        nx += int(length)
-    elif (direction == "L"):
-        nx -= int(length)
-    elif (direction == "U"):
-        ny -= int(length)
-    elif (direction == "D"):
-        ny += int(length)
+    # A = area, I = internal nodes, B = border nodes
+    # Pick's theorem --> A = I + B/2 - 1
+    interior = int(A - (edges/2) + 1)  # Inverted Pick's theorem
+    if part2:
+        ans2 = edges + interior
     else:
-        assert False, "Unknown direction"
-    edges += int(length)
-    graph.append((ny, nx))
+        ans1 = edges + interior
 
-
-print(graph)
-A = shoelace(graph)
-B = len(graph)
-
-# A = area, I = internal nodes, B = border nodes
-# Pick's theorem --> A = I + B/2 - 1
-I = int(A - (edges/2) + 1)  # Inverted Pick's theorem
-ans1 = edges + I
 print(ans1, ans2)

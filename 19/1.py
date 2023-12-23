@@ -31,12 +31,7 @@ for part in parts:
             else:
                 res = rule[rule.find(":")+1:]
                 condition: str = rule[:rule.find(":")]
-                condition = condition.replace("x", str(x))
-                condition = condition.replace("m", str(m))
-                condition = condition.replace("a", str(a))
-                condition = condition.replace("s", str(s))
-                isTrue = eval(condition)
-                if isTrue:
+                if eval(condition):
                     break
 
         if res == "A":

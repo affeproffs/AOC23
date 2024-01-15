@@ -15,8 +15,8 @@ def findPaths(component):
         if curr in visited:
             continue
         visited.add(curr)
-        p1, p2 = sorted([prev, curr])
-        visCount[p2][p1] += 1
+        c1, c2 = sorted([prev, curr])
+        visCount[c2][c1] += 1
         for connected in connections[curr]:
             q.append((curr, connected))
     return visited

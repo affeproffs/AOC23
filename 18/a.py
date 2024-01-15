@@ -1,6 +1,10 @@
 from sys import stdin
 from typing import *
 
+"""
+    This solution utilizes shoelace formula and pick's theorem.
+"""
+
 
 def shoelace(borders: List[Tuple[int, int]]):
     """ Returns the area of the loop """
@@ -12,12 +16,13 @@ def shoelace(borders: List[Tuple[int, int]]):
     return abs(lSum - rSum) / 2
 
 
+toDirection = "RDLU"
 plan: List[Tuple[str, str, str]] = []
 for i, line in enumerate(stdin):
     direction, length, color = line.split()
-    plan.append((direction, length, color))
+    plan.append((toDirection.index(direction), int(length), color))
 
-toDirection = "RDLU"
+
 ans1, ans2 = 0, 0
 for part2 in [False, True]:
     graph = [(0, 0)]
@@ -26,24 +31,19 @@ for part2 in [False, True]:
         ny, nx = graph[-1]
         if part2:
             length = int(color[color.find("#") + 1:-2], 16)
-            direction = toDirection[int(color[-2])]
-        if (direction == "R"):
-            nx += int(length)
-        elif (direction == "L"):
-            nx -= int(length)
-        elif (direction == "U"):
-            ny -= int(length)
-        elif (direction == "D"):
-            ny += int(length)
-        else:
-            assert False, "Unknown direction"
-        edges += int(length)
+            direction = int(color[-2])
+        directions = ((length, 0), (0, length), (-length, 0), (0, -length))
+        dx, dy = directions[direction]
+        ny += dy
+        nx += dx
+
+        edges += length
         graph.append((ny, nx))
     A = shoelace(graph)
     B = len(graph)
 
     # A = area, I = internal nodes, B = border nodes
-    # Pick's theorem --> A = I + B/2 - 1
+    # Pick's theorem states that A = I + B/2 - 1
     interior = int(A - (edges/2) + 1)  # Inverted Pick's theorem
     if part2:
         ans2 = edges + interior
